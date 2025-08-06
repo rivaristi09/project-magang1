@@ -75,7 +75,6 @@ class SuratMasuk extends BaseController
             'perihal'         => $this->request->getPost('perihal'),
             'kepada'          => $this->request->getPost('kepada'),
             'courier'         => $this->request->getPost('courier'),
-            'dibuat'          => session()->get('nama_pengguna'),
             'tanggal_buat'    => date('Y-m-d'),
             'tanggal_update'  => date('Y-m-d'),
             'file'            => $filename
