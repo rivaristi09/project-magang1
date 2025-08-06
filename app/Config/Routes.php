@@ -37,3 +37,13 @@ $routes->get('surat_keluar/edit/(:num)', 'SuratKeluar::edit/$1');
 $routes->post('surat_keluar/update/(:num)', 'SuratKeluar::update/$1');
 
 $routes->post('surat_keluar/delete/(:num)', 'SuratKeluar::delete/$1');
+
+$routes->get('user', 'User::index');
+$routes->get('user/create', 'User::create');
+$routes->post('user/store', 'User::store');
+$routes->get('user/edit/(:num)', 'User::edit/$1');
+$routes->post('user/update/(:num)', 'User::update/$1');
+$routes->get('user/delete/(:num)', 'User::delete/$1');
+
+$routes->get('auth/social-login/(:segment)', 'AuthController::socialLogin/$1');
+$routes->get('auth/social-callback/(:segment)', 'AuthController::socialLogin/$1');

@@ -17,5 +17,5 @@ class UserModel extends Model
     protected $allowedFields = ['nama', 'username', 'password', 'level'];
 
     // Opsional: untuk keamanan
-    protected $useTimestamps = false;
+    protected $useTimestamps=false;
 }
