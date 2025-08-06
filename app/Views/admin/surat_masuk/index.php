@@ -54,7 +54,6 @@
                     <th>Perihal</th>
                     <th>Kepada</th>
                     <th>Courier</th>
-                    <th>Dibuat</th>
                     <th>Tgl Buat</th>
                     <th>Tgl Update</th>
                     <th>File</th>
@@ -94,7 +93,6 @@
                                     <?= esc($row['courier']) ?>
                                 </span>
                             </td>
-                            <td><?= esc($row['dibuat']) ?></td>
                             <td><small class="text-muted"><?= date('d/m/Y H:i', strtotime($row['tanggal_buat'])) ?></small></td>
                             <td><small class="text-muted"><?= date('d/m/Y H:i', strtotime($row['tanggal_update'])) ?></small></td>
                             <td>
