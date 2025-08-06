@@ -22,21 +22,16 @@ class SuratMasuk extends BaseController
 }
 
     public function detail($id)
-    {
-        $surat = $this->model->find($id);
-        if (!$surat) {
-            throw \CodeIgniter\Exceptions\PageNotFoundException::forPageNotFound("Data tidak ditemukan");
-        }
-
-        $data['surat'] = $surat;
-        $level = session()->get('level');
-
-        if ($level === 'admin') {
-            return view('admin/surat_masuk/detail', $data);
-        } else {
-            return view('pengguna/surat_masuk/detail', $data);
-        }
+{
+    $surat = $this->model->find($id);
+    if (!$surat) {
+        throw \CodeIgniter\Exceptions\PageNotFoundException::forPageNotFound("Data tidak ditemukan");
     }
+
+    $data['surat'] = $surat;
+
+    return view('admin/surat_masuk/detail', $data);
+}
 
     public function create()
 {
