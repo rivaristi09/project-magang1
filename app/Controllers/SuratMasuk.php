@@ -15,11 +15,16 @@ class SuratMasuk extends BaseController
     }
 
     public function index()
-{
-    $data['surat'] = $this->model->findAll();
+    {
+        $data['surat'] = $this->model->findAll();
+        $level = session()->get('level');
 
-    return view('admin/surat_masuk/index', $data); // view digunakan oleh admin & user
-}
+        if ($level === 'admin') {
+            return view('admin/surat_masuk/index', $data);
+        } else {
+            return view('pengguna/surat_masuk/index', $data);
+        }
+    }
 
     public function detail($id)
     {
@@ -39,46 +44,46 @@ class SuratMasuk extends BaseController
     }
 
     public function create()
-{
-    $level = session()->get('level');
-    if (!in_array($level, ['admin', 'user'])) {
-        return redirect()->back()->with('error', 'Tidak diizinkan.');
+    {
+        if (session()->get('level') !== 'admin') {
+            return redirect()->back()->with('error', 'Tidak diizinkan.');
+        }
+
+        return view('admin/surat_masuk/create');
     }
 
-    return view('admin/surat_masuk/create'); 
-}
-       public function store()
-{
-    $level = session()->get('level');
-    if (!in_array($level, ['admin', 'user'])) {
-        return redirect()->back()->with('error', 'Tidak diizinkan.');
+    public function store()
+    {
+        if (session()->get('level') !== 'admin') {
+            return redirect()->back()->with('error', 'Tidak diizinkan.');
+        }
+
+        $file = $this->request->getFile('file');
+        $filename = null;
+
+        if ($file && $file->isValid()) {
+            $filename = $file->getRandomName();
+            $file->move('uploads/surat_masuk', $filename);
+        }
+
+        $data = [
+            'tahun'           => $this->request->getPost('tahun'),
+            'no_surat'        => $this->request->getPost('no_surat'),
+            'tanggal_surat'   => $this->request->getPost('tanggal_surat'),
+            'surat_diterima'  => $this->request->getPost('surat_diterima'),
+            'dari'            => $this->request->getPost('dari'),
+            'perihal'         => $this->request->getPost('perihal'),
+            'kepada'          => $this->request->getPost('kepada'),
+            'courier'         => $this->request->getPost('courier'),
+            'dibuat'          => session()->get('nama_pengguna'),
+            'tanggal_buat'    => date('Y-m-d'),
+            'tanggal_update'  => date('Y-m-d'),
+            'file'            => $filename
+        ];
+
+        $this->model->insert($data);
+        return redirect()->to('/surat_masuk')->with('success', 'Surat masuk berhasil disimpan.');
     }
-
-    $file = $this->request->getFile('file');
-    $filename = null;
-
-    if ($file && $file->isValid()) {
-        $filename = $file->getRandomName();
-        $file->move('uploads/surat_masuk', $filename);
-    }
-
-    $data = [
-        'tahun'           => $this->request->getPost('tahun'),
-        'no_surat'        => $this->request->getPost('no_surat'),
-        'tanggal_surat'   => $this->request->getPost('tanggal_surat'),
-        'surat_diterima'  => $this->request->getPost('surat_diterima'),
-        'dari'            => $this->request->getPost('dari'),
-        'perihal'         => $this->request->getPost('perihal'),
-        'kepada'          => $this->request->getPost('kepada'),
-        'courier'         => $this->request->getPost('courier'),
-        'tanggal_buat'    => date('Y-m-d'),
-        'tanggal_update'  => date('Y-m-d'),
-        'file'            => $filename
-    ];
-
-    $this->model->insert($data);
-    return redirect()->to('/surat_masuk')->with('success', 'Surat masuk berhasil disimpan.');
-}
 
     public function edit($id)
     {
@@ -118,6 +123,7 @@ class SuratMasuk extends BaseController
             'perihal'         => $this->request->getPost('perihal'),
             'kepada'          => $this->request->getPost('kepada'),
             'courier'         => $this->request->getPost('courier'),
+            'dibuat'          => session()->get('nama_pengguna'),
             'tanggal_buat'    => date('Y-m-d'),
             'tanggal_update'  => date('Y-m-d'),
             'file'            => $filename
